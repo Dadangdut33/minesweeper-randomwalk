@@ -55,6 +55,7 @@ class App extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.checkTiles = this.checkTiles.bind(this);
 		this.mapCheat = this.mapCheat.bind(this);
+		this.changeTiles = this.changeTiles.bind(this);
 	}
 
 	createArray(num, dimensions) {
@@ -69,10 +70,52 @@ class App extends Component {
 	}
 
 	onChange(e) {
-		this.setState({
-			[e.target.name]: this.validator(e.target.value),
-			reset: true,
-		});
+		if (e.target.name !== "dimensions") {
+			if (e.target.value > 0 && e.target.value <= 1000) {
+				this.setState({
+					[e.target.name]: this.validator(e.target.value),
+				});
+			} else {
+				if (e.target.value < 1) {
+					this.setState({
+						[e.target.name]: 1,
+					});
+				} else {
+					this.setState({
+						[e.target.name]: 1000,
+					});
+				}
+			}
+		} else {
+			if (e.target.value > 2 && e.target.value <= 100) {
+				this.setState({
+					[e.target.name]: this.validator(e.target.value),
+				});
+			} else {
+				if (e.target.value < 3) {
+					this.setState({
+						[e.target.name]: 3,
+					});
+				} else {
+					this.setState({
+						[e.target.name]: 100,
+					});
+				}
+			}
+		}
+	}
+
+	changeTiles(e) {
+		// confirmation first
+		if (window.confirm("Are you sure you want to change the map?")) {
+			this.setState({
+				revealed: false,
+				map: this.createMap(),
+				reset: true,
+			});
+
+			this.resetTiles();
+		}
 	}
 
 	validator(x) {
@@ -84,6 +127,7 @@ class App extends Component {
 	}
 
 	mapCheat(e) {
+		alert("Map printed to console");
 		console.log("=".repeat(25));
 		console.log("Revealing the map...");
 		console.log("=".repeat(25));
@@ -313,9 +357,12 @@ class App extends Component {
 			for (var j = 0; j < this.state.dimensions; j++) {
 				try {
 					var tile = document.getElementById(i + "-" + j);
+					var innerTile = document.getElementById("inner-" + i + "-" + j);
 
 					tile.style.border = "";
 					tile.style.backgroundColor = "";
+
+					innerTile.className = "hidden";
 				} catch (e) {
 					/* Ignored */
 					// console.log("checkTiles" + e);
@@ -348,7 +395,6 @@ class App extends Component {
 	}
 
 	checkTiles(e) {
-		// this.forceUpdate();
 		// check lost or not
 		if (this.state.revealed) {
 			if (window.confirm("You have lost the game! Would you like to reset?")) {
@@ -406,24 +452,24 @@ class App extends Component {
 	render() {
 		let grid = this.createMap();
 
-		if (grid === undefined) {
-			grid = this.state.mapBefore;
-		}
-
 		return (
 			<div>
 				<div className='form-group row text-center'>
 					<div className='inline'>
 						<label>dimensions</label>
-						<input className='form-control' name='dimensions' type='text' minLength='1' maxLength='2' value={this.state.dimensions} onChange={this.onChange} />
+						<input className='form-control' name='dimensions' type='number' min='1' max='1000' value={this.state.dimensions} onChange={this.onChange} />
 					</div>
 					<div className='inline'>
 						<label>maxTunnels</label>
-						<input className='form-control' name='maxTunnels' type='text' minLength='1' maxLength='3' value={this.state.maxTunnels} onChange={this.onChange} />
+						<input className='form-control' name='maxTunnels' type='number' min='1' max='1000' value={this.state.maxTunnels} onChange={this.onChange} />
 					</div>
 					<div className='inline'>
 						<label>maxLength</label>
-						<input className='form-control' name='maxLength' type='text' minLength='1' maxLength='3' value={this.state.maxLength} onChange={this.onChange} />
+						<input className='form-control' name='maxLength' type='number' min='1' max='1000' value={this.state.maxLength} onChange={this.onChange} />
+					</div>
+					<div className='inline'>
+						<label>Change</label>
+						<input className='form-control' type='button' onClick={this.changeTiles} value={"Change Map"} />
 					</div>
 				</div>
 				<table className='grid'>
@@ -445,7 +491,7 @@ class App extends Component {
 				<div className='form-group row text-center'>
 					<div className='inline'>
 						<label>Cheat</label>
-						<input className='form-control' name='cheat' type='button' onClick={this.mapCheat} />
+						<input className='form-control' name='cheat' type='button' onClick={this.mapCheat} value={"Show"} />
 					</div>
 				</div>
 			</div>
