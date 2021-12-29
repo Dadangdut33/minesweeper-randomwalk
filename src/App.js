@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 
+// convert the map to a minesweeper map
 function convertToNumber(map, i, j, dimensions) {
 	var count = 0;
 	var row = dimensions;
@@ -72,6 +73,7 @@ class App extends Component {
 		this.generateNew = this.generateNew.bind(this);
 	}
 
+	// create array with number provided
 	createArray(num, dimensions) {
 		var array = [];
 		for (var i = 0; i < dimensions; i++) {
@@ -83,6 +85,7 @@ class App extends Component {
 		return array;
 	}
 
+	// onchange for number inputs
 	onChange(e) {
 		if (e.target.name !== "dimensions") {
 			if (e.target.value > 0 && e.target.value <= 1000) {
@@ -119,6 +122,7 @@ class App extends Component {
 		}
 	}
 
+	// timer
 	startTimer() {
 		var timer = setInterval(() => {
 			if (!this.state.playing) {
@@ -133,6 +137,7 @@ class App extends Component {
 		}, 1000);
 	}
 
+	// format for timer
 	formatTime() {
 		const getSeconds = `0${this.state.timer % 60}`.slice(-2);
 		const minutes = `${Math.floor(this.state.timer / 60)}`;
@@ -144,6 +149,7 @@ class App extends Component {
 		});
 	}
 
+	// validator for number inputs
 	validator(x) {
 		let input = Number(x);
 		if (isNaN(input)) {
@@ -152,6 +158,7 @@ class App extends Component {
 		return input;
 	}
 
+	// print the map to console
 	mapCheat(e) {
 		alert("Map printed to console");
 		console.log("=".repeat(25));
@@ -263,6 +270,7 @@ class App extends Component {
 		return map; // all the tunnels have been created and the map is complete, so lets return it to render()
 	}
 
+	// Reveal surrounding tiles
 	revealSurroundings(map, row, col) {
 		// check row and col not out of bounds
 		if (row < 0 || col < 0 || row >= map.length || col >= map.length) {
@@ -371,6 +379,28 @@ class App extends Component {
 		}
 	}
 
+	revealAll() {
+		// loop through all the elements and for the empty one change the style border and background color
+		for (var i = 0; i < this.state.dimensions; i++) {
+			for (var j = 0; j < this.state.dimensions; j++) {
+				try {
+					var tile = document.getElementById(i + "-" + j);
+					var insideTheTile = document.getElementById("inner-" + i + "-" + j);
+
+					if (insideTheTile.innerHTML === "") {
+						// tile.style.border = "none";
+						tile.style.backgroundColor = "white";
+					} else if (insideTheTile.innerHTML !== "💣") {
+						tile.style.backgroundColor = "#f6d852";
+					}
+				} catch (e) {
+					/* Ignored */
+					// console.log("checkTiles" + e);
+				}
+			}
+		}
+	}
+
 	resetTiles() {
 		// loop through all the elements and for the empty one change the style border and background color
 		for (var i = 0; i < this.state.dimensions; i++) {
@@ -391,25 +421,44 @@ class App extends Component {
 		}
 	}
 
-	revealAll() {
-		// loop through all the elements and for the empty one change the style border and background color
-		for (var i = 0; i < this.state.dimensions; i++) {
-			for (var j = 0; j < this.state.dimensions; j++) {
-				try {
-					var tile = document.getElementById(i + "-" + j);
-					var insideTheTile = document.getElementById("inner-" + i + "-" + j);
+	generateNew() {
+		this.setState({
+			revealed: false,
+			reset: true,
+			map: this.createMap(),
+			win: false,
+			lost: false,
+		});
+		this.resetTiles();
+	}
 
-					if (insideTheTile.innerHTML === "") {
-						// tile.style.border = "none";
-						tile.style.backgroundColor = "white";
-					} else if (insideTheTile.innerHTML !== "💣") {
-						tile.style.backgroundColor = "#f6d852";
-					}
-				} catch (e) {
-					/* Ignored */
-					// console.log("checkTiles" + e);
-				}
-			}
+	changePreset(e) {
+		console.log(e.target.value);
+		var chosen = e.target.value;
+		if (chosen === "Easy") {
+			this.setState({
+				dimensions: 9,
+				maxTunnels: 85,
+				maxLength: 45,
+			});
+		} else if (chosen === "Medium") {
+			this.setState({
+				dimensions: 16,
+				maxTunnels: 120,
+				maxLength: 60,
+			});
+		} else if (chosen === "Hard") {
+			this.setState({
+				dimensions: 22,
+				maxTunnels: 200,
+				maxLength: 100,
+			});
+		} else if (chosen === "Very Hard") {
+			this.setState({
+				dimensions: 28,
+				maxTunnels: 220,
+				maxLength: 130,
+			});
 		}
 	}
 
@@ -450,17 +499,6 @@ class App extends Component {
 		this.setState({
 			showWin: false,
 		});
-	}
-
-	generateNew() {
-		this.setState({
-			revealed: false,
-			reset: true,
-			map: this.createMap(),
-			win: false,
-			lost: false,
-		});
-		this.resetTiles();
 	}
 
 	checkTiles(e) {
@@ -552,36 +590,6 @@ class App extends Component {
 					}
 				}
 			}
-		}
-	}
-
-	changePreset(e) {
-		console.log(e.target.value);
-		var chosen = e.target.value;
-		if (chosen === "Easy") {
-			this.setState({
-				dimensions: 9,
-				maxTunnels: 85,
-				maxLength: 45,
-			});
-		} else if (chosen === "Medium") {
-			this.setState({
-				dimensions: 16,
-				maxTunnels: 120,
-				maxLength: 60,
-			});
-		} else if (chosen === "Hard") {
-			this.setState({
-				dimensions: 22,
-				maxTunnels: 200,
-				maxLength: 100,
-			});
-		} else if (chosen === "Very Hard") {
-			this.setState({
-				dimensions: 28,
-				maxTunnels: 220,
-				maxLength: 130,
-			});
 		}
 	}
 
