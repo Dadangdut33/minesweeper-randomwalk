@@ -74,11 +74,11 @@ td {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .block {
-  display: block;
+  display: block !important;
 }
 
 .revealed {
@@ -87,7 +87,7 @@ td {
 }
 
 .default-cursor {
-  cursor: default;
+  cursor: default !important;
 }
 
 #win-popup {
@@ -98,6 +98,7 @@ td {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1;
+  display: none;
 }
 
 .popup {

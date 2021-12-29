@@ -54,6 +54,12 @@ class App extends Component {
 			win: false,
 			lost: false,
 			showWin: false,
+			bombCounter: 0,
+			totalMoves: 0,
+			timer: 0,
+			timerStr: "00 : 00 : 00",
+			playing: true,
+			timerStarted: false,
 		};
 		this.onChange = this.onChange.bind(this);
 		this.checkTiles = this.checkTiles.bind(this);
@@ -61,6 +67,8 @@ class App extends Component {
 		this.changeTiles = this.changeTiles.bind(this);
 		this.checkWin = this.checkWin.bind(this);
 		this.hideSHowWin = this.hideSHowWin.bind(this);
+		this.startTimer = this.startTimer.bind(this);
+		this.formatTime = this.formatTime.bind(this);
 	}
 
 	createArray(num, dimensions) {
@@ -121,6 +129,31 @@ class App extends Component {
 
 			this.resetTiles();
 		}
+	}
+
+	startTimer() {
+		var timer = setInterval(() => {
+			if (!this.state.playing) {
+				clearInterval(timer);
+				return;
+			}
+			this.setState({
+				timer: this.state.timer + 1,
+			});
+
+			this.formatTime();
+		}, 1000);
+	}
+
+	formatTime() {
+		const getSeconds = `0${this.state.timer % 60}`.slice(-2);
+		const minutes = `${Math.floor(this.state.timer / 60)}`;
+		const getMinutes = `0${minutes % 60}`.slice(-2);
+		const getHours = `0${Math.floor(this.state.timer / 3600)}`.slice(-2);
+
+		this.setState({
+			timerStr: `${getHours} : ${getMinutes} : ${getSeconds}`,
+		});
 	}
 
 	validator(x) {
@@ -194,11 +227,13 @@ class App extends Component {
 			}
 		}
 
+		var bombCounter = 0; //counter for the number of bombs
 		// based on the walls and tunnel, create a minesweeper map
 		for (var i = 0; i < dimensions; i++) {
 			for (var j = 0; j < dimensions; j++) {
 				if (map[i][j] === 1) {
 					map[i][j] = "💣";
+					bombCounter++;
 				} else {
 					map[i][j] = "#";
 				}
@@ -216,8 +251,7 @@ class App extends Component {
 			}
 		}
 
-		// this.state.currMap = map;
-		// map = this.state.currMap;
+		// if reset/create new map
 		if (this.state.reset) {
 			// if reset/on start
 			this.setState({
@@ -226,8 +260,15 @@ class App extends Component {
 				win: false,
 				lose: false,
 				showWin: false,
+				bombCounter: bombCounter,
+				totalMoves: 0,
+				timer: 0,
+				timerStr: "00 : 00 : 00",
+				playing: true,
+				timerStarted: false,
 			});
 		} else {
+			// if not reset
 			map = this.state.currMap;
 		}
 
@@ -407,6 +448,8 @@ class App extends Component {
 			this.setState({
 				win: true,
 				showWin: true,
+				revealed: true,
+				playing: false,
 			});
 		} else {
 			this.setState({
@@ -435,7 +478,7 @@ class App extends Component {
 				this.resetTiles();
 			}
 
-			// return;
+			return;
 		}
 
 		// check lost or not
@@ -454,6 +497,13 @@ class App extends Component {
 			return;
 		}
 
+		if (!this.state.timerStarted) {
+			this.setState({
+				timerStarted: true,
+			});
+			this.startTimer();
+		}
+
 		if (this.state.win === false) {
 			// onclick, check if mine or not. if mine tell user lost
 			if (e.target.getAttribute("data-tiletype") === "mines") {
@@ -468,6 +518,7 @@ class App extends Component {
 					revealed: true,
 					reset: false,
 					lost: true,
+					playing: false,
 				});
 			} else {
 				var innerTile = document.getElementById("inner-" + e.target.id);
@@ -489,6 +540,12 @@ class App extends Component {
 						var row = e.target.id.split("-")[0];
 						var col = e.target.id.split("-")[1];
 						this.revealSurroundings(this.state.currMap, row, col);
+
+						var currentMove = this.state.totalMoves;
+						currentMove++;
+						this.setState({
+							totalMoves: currentMove,
+						});
 
 						this.forceUpdate();
 
@@ -540,19 +597,31 @@ class App extends Component {
 				</table>
 				<div className='form-group row text-center'>
 					<div className='inline'>
+						<label>Status</label>
+						<input className='form-control default-cursor' type='button' value={this.state.win ? "Win" : this.state.lost ? "Lost" : "Playing"} />
+					</div>
+					<div className='inline'>
+						<label>Bomb</label>
+						<input className='form-control default-cursor' type='button' value={this.state.bombCounter} />
+					</div>
+					<div className='inline'>
+						<label>Moves</label>
+						<input className='form-control default-cursor' type='button' value={this.state.totalMoves} />
+					</div>
+					<div className='inline'>
+						<label>Time</label>
+						<input className='form-control default-cursor' type='button' value={this.state.timerStr} />
+					</div>
+					<div className='inline'>
 						<label>Cheat</label>
 						<input className='form-control' name='cheat' type='button' onClick={this.mapCheat} value={"Show"} />
 					</div>
-					<div className='inline'>
-						<label>State</label>
-						<input className='form-control default-cursor' type='button' value={this.state.win ? "Win" : this.state.lost ? "Lost" : "‏‏‎ ‎"} />
-					</div>
-					<div className={this.state.showWin ? "block" : "hidden"} id='win-popup'>
-						<div className='popup'>
-							<div className='popup-content'>
-								<h2>Congratulations! You Won the game!</h2>
-								<input className='form-control' type='button' onClick={this.hideSHowWin} value={"Okay"} />
-							</div>
+				</div>
+				<div className={this.state.showWin ? "block" : "hidden"} id='win-popup'>
+					<div className='popup'>
+						<div className='popup-content'>
+							<h2>Congratulations! You Won the game!</h2>
+							<input className='form-control' type='button' onClick={this.hideSHowWin} value={"Okay"} />
 						</div>
 					</div>
 				</div>
