@@ -3,8 +3,8 @@ import "./App.css";
 
 function convertToNumber(map, i, j, dimensions) {
 	var count = 0;
-	var baris = dimensions;
-	var kolom = dimensions;
+	var row = dimensions;
+	var column = dimensions;
 	try {
 		if (i > 0) {
 			if (j > 0) {
@@ -13,24 +13,24 @@ function convertToNumber(map, i, j, dimensions) {
 			if (map[i - 1][j] === "*") {
 				count += 1;
 			}
-			if (j < kolom - 1) {
+			if (j < column - 1) {
 				if (map[i - 1][j + 1] === "*") count += 1;
 			}
 		}
 		if (j > 0) {
 			if (map[i][j - 1] === "*") count += 1;
 		}
-		if (j < kolom - 1) {
+		if (j < column - 1) {
 			if (map[i][j + 1] === "*") count += 1;
 		}
-		if (i < baris - 1)
+		if (i < row - 1)
 			if (j > 0) {
 				if (map[i + 1][j - 1] === "*") count += 1;
 			}
 		if (map[i + 1][j] === "*") {
 			count += 1;
 		}
-		if (j < kolom - 1) {
+		if (j < column - 1) {
 			if (map[i + 1][j + 1] === "*") count += 1;
 		}
 	} catch (e) {
@@ -51,11 +51,15 @@ class App extends Component {
 			revealed: false,
 			reset: true,
 			currMap: [],
+			win: false,
+			lost: false,
 		};
 		this.onChange = this.onChange.bind(this);
 		this.checkTiles = this.checkTiles.bind(this);
 		this.mapCheat = this.mapCheat.bind(this);
 		this.changeTiles = this.changeTiles.bind(this);
+		this.checkWin = this.checkWin.bind(this);
+		this.alertWinPoll = this.alertWinPoll.bind(this);
 	}
 
 	createArray(num, dimensions) {
@@ -136,8 +140,6 @@ class App extends Component {
 
 	//lets create a randomly generated map for our dungeon crawler
 	createMap() {
-		console.log("creating map");
-
 		let dimensions = this.state.dimensions, // width and height of the map
 			maxTunnels = this.state.maxTunnels, // max number of tunnels possible
 			maxLength = this.state.maxLength, // max length each tunnel can have
@@ -220,7 +222,10 @@ class App extends Component {
 			this.setState({
 				currMap: map,
 				reset: false,
+				win: false,
+				lose: false,
 			});
+			this.alertWinPoll();
 		} else {
 			map = this.state.currMap;
 		}
@@ -241,6 +246,7 @@ class App extends Component {
 				var up = document.getElementById("inner-" + (row - 1) + "-" + col);
 				var outerUp = document.getElementById(row - 1 + "-" + col);
 				if (up !== null) {
+					up.className = "revealed";
 					if (up.innerHTML === "") {
 						if (outerUp.style.backgroundColor !== "white") {
 							// outerUp.style.border = "none";
@@ -250,11 +256,7 @@ class App extends Component {
 							this.revealSurroundings(map, row - 1, col);
 						}
 					} else {
-						if (up.className !== "revealed") {
-							up.className = "revealed";
-
-							outerUp.style.backgroundColor = "#f6d852";
-						}
+						outerUp.style.backgroundColor = "#f6d852";
 					}
 				}
 			}
@@ -268,8 +270,8 @@ class App extends Component {
 			if (map[row + 1][col] !== "*") {
 				var down = document.getElementById("inner-" + (row + 1) + "-" + col);
 				var outerDown = document.getElementById(row + 1 + "-" + col);
-
 				if (down !== null) {
+					down.className = "revealed";
 					if (down.innerHTML === "") {
 						if (outerDown.style.backgroundColor !== "white") {
 							// outerDown.style.border = "none";
@@ -279,11 +281,7 @@ class App extends Component {
 							this.revealSurroundings(map, row + 1, col);
 						}
 					} else {
-						if (down.className !== "revealed") {
-							down.className = "revealed";
-
-							outerDown.style.backgroundColor = "#f6d852";
-						}
+						outerDown.style.backgroundColor = "#f6d852";
 					}
 				}
 			}
@@ -297,8 +295,8 @@ class App extends Component {
 			if (map[row][col - 1] !== "*") {
 				var left = document.getElementById("inner-" + row + "-" + (col - 1));
 				var outerLeft = document.getElementById(row + "-" + (col - 1));
-
 				if (left !== null) {
+					left.className = "revealed";
 					if (left.innerHTML === "") {
 						if (outerLeft.style.backgroundColor !== "white") {
 							// outerLeft.style.border = "none";
@@ -308,11 +306,7 @@ class App extends Component {
 							this.revealSurroundings(map, row, col - 1);
 						}
 					} else {
-						if (left.className !== "revealed") {
-							left.className = "revealed";
-
-							outerLeft.style.backgroundColor = "#f6d852";
-						}
+						outerLeft.style.backgroundColor = "#f6d852";
 					}
 				}
 			}
@@ -326,8 +320,8 @@ class App extends Component {
 			if (map[row][col + 1] !== "*") {
 				var right = document.getElementById("inner-" + row + "-" + (col + 1));
 				var outerRight = document.getElementById(row + "-" + (col + 1));
-
 				if (right !== null) {
+					right.className = "revealed";
 					if (right.innerHTML === "") {
 						if (outerRight.style.backgroundColor !== "white") {
 							// outerRight.style.border = "none";
@@ -337,11 +331,7 @@ class App extends Component {
 							this.revealSurroundings(map, row, col + 1);
 						}
 					} else {
-						if (right.className !== "revealed") {
-							right.className = "revealed";
-
-							outerRight.style.backgroundColor = "#f6d852";
-						}
+						outerRight.style.backgroundColor = "#f6d852";
 					}
 				}
 			}
@@ -376,7 +366,6 @@ class App extends Component {
 		for (var i = 0; i < this.state.dimensions; i++) {
 			for (var j = 0; j < this.state.dimensions; j++) {
 				try {
-					console.log(i + "-" + j);
 					var tile = document.getElementById(i + "-" + j);
 					var insideTheTile = document.getElementById("inner-" + i + "-" + j);
 
@@ -394,56 +383,123 @@ class App extends Component {
 		}
 	}
 
+	checkWin() {
+		var allSafeRevealed = true;
+		for (var i = 0; i < this.state.dimensions; i++) {
+			for (var j = 0; j < this.state.dimensions; j++) {
+				try {
+					var innerTile = document.getElementById("inner-" + i + "-" + j);
+
+					if (innerTile.innerHTML !== "*") {
+						if (innerTile.className === "hidden") {
+							allSafeRevealed = false;
+						}
+					}
+				} catch (e) {
+					/* Ignored */
+					// console.log("checkTiles" + e);
+				}
+			}
+		}
+
+		if (allSafeRevealed) {
+			this.setState({
+				win: true,
+			});
+		} else {
+			this.setState({
+				win: false,
+			});
+		}
+	}
+
+	alertWinPoll() {
+		// check every 0.1 second
+		var showAlert = true;
+		var isWon = setInterval(() => {
+			if (this.state.win) {
+				clearInterval(isWon);
+				if (showAlert) {
+					showAlert = false;
+					alert("You Won!");
+				}
+			}
+		}, 500);
+	}
+
 	checkTiles(e) {
+		// check win or not
+		if (this.state.win) {
+			if (window.confirm("You have won the game! Would you like to reset?")) {
+				this.setState({
+					revealed: false,
+					map: this.createMap(),
+					reset: true,
+					win: false,
+				});
+
+				this.resetTiles();
+			}
+
+			// return;
+		}
+
 		// check lost or not
-		if (this.state.revealed) {
+		if (this.state.lost) {
 			if (window.confirm("You have lost the game! Would you like to reset?")) {
 				this.setState({
 					revealed: false,
 					map: this.createMap(),
 					reset: true,
+					lost: false,
 				});
 
 				this.resetTiles();
 			}
+
+			return;
 		}
 
-		// onclick, check if mine or not. if mine tell user lost
-		if (e.target.getAttribute("data-tiletype") === "mines") {
-			console.log("You lost!");
+		if (this.state.win === false) {
+			// onclick, check if mine or not. if mine tell user lost
+			if (e.target.getAttribute("data-tiletype") === "mines") {
+				console.log("You lost!");
 
-			alert("You step on a mine. You lost!");
+				alert("You step on a mine. You lost!");
 
-			this.revealAll();
+				this.revealAll();
 
-			// reveal the map
-			this.setState({
-				revealed: true,
-				reset: false,
-			});
-		} else {
-			console.log("You clicked on a tile");
-			var x = document.getElementById("inner-" + e.target.id);
+				// reveal the map
+				this.setState({
+					revealed: true,
+					reset: false,
+					lost: true,
+				});
+			} else {
+				var innerTile = document.getElementById("inner-" + e.target.id);
 
-			if (x !== null) {
-				if (x.className !== "revealed") {
-					x.className = "revealed";
+				if (innerTile !== null) {
+					if (innerTile.className !== "revealed") {
+						innerTile.className = "revealed";
 
-					var outer = document.getElementById(e.target.id);
-					// check empty content
-					if (x.innerHTML === "") {
-						// outer.style.border = "none";
-						outer.style.backgroundColor = "white";
-					} else {
-						outer.style.backgroundColor = "#f6d852";
+						var outer = document.getElementById(e.target.id);
+						// check empty content
+						if (innerTile.innerHTML === "") {
+							// outer.style.border = "none";
+							outer.style.backgroundColor = "white";
+						} else {
+							outer.style.backgroundColor = "#f6d852";
+						}
+						// id is row-col
+						// separate it
+						var row = e.target.id.split("-")[0];
+						var col = e.target.id.split("-")[1];
+						this.revealSurroundings(this.state.currMap, row, col);
+
+						this.forceUpdate();
+
+						this.checkWin();
 					}
-					// id is row-col
-					// separate it
-					var row = e.target.id.split("-")[0];
-					var col = e.target.id.split("-")[1];
-					this.revealSurroundings(this.state.currMap, row, col);
-
-					this.forceUpdate();
 				}
 			}
 		}
@@ -492,6 +548,10 @@ class App extends Component {
 					<div className='inline'>
 						<label>Cheat</label>
 						<input className='form-control' name='cheat' type='button' onClick={this.mapCheat} value={"Show"} />
+					</div>
+					<div className='inline'>
+						<label>State</label>
+						<input className='form-control default-cursor' type='button' value={this.state.win ? "Win" : this.state.lost ? "Lost" : "‏‏‎ ‎"} />
 					</div>
 				</div>
 			</div>

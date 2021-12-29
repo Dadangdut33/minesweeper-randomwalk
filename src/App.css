@@ -82,6 +82,10 @@ td {
   color: blue;
 }
 
+.default-cursor {
+  cursor: default;
+}
+
 /* .wall:before {
   content: "1";
 }
