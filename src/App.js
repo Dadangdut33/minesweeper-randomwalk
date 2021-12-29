@@ -45,9 +45,9 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dimensions: 20,
-			maxTunnels: 100,
-			maxLength: 30,
+			dimensions: 9,
+			maxTunnels: 85,
+			maxLength: 45,
 			revealed: false,
 			reset: true,
 			currMap: [],
@@ -64,11 +64,12 @@ class App extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.checkTiles = this.checkTiles.bind(this);
 		this.mapCheat = this.mapCheat.bind(this);
-		this.changeTiles = this.changeTiles.bind(this);
 		this.checkWin = this.checkWin.bind(this);
 		this.hideSHowWin = this.hideSHowWin.bind(this);
 		this.startTimer = this.startTimer.bind(this);
 		this.formatTime = this.formatTime.bind(this);
+		this.changePreset = this.changePreset.bind(this);
+		this.generateNew = this.generateNew.bind(this);
 	}
 
 	createArray(num, dimensions) {
@@ -115,19 +116,6 @@ class App extends Component {
 					});
 				}
 			}
-		}
-	}
-
-	changeTiles(e) {
-		// confirmation first
-		if (window.confirm("Are you sure you want to change the map?")) {
-			this.setState({
-				revealed: false,
-				map: this.createMap(),
-				reset: true,
-			});
-
-			this.resetTiles();
 		}
 	}
 
@@ -464,6 +452,17 @@ class App extends Component {
 		});
 	}
 
+	generateNew() {
+		this.setState({
+			revealed: false,
+			reset: true,
+			map: this.createMap(),
+			win: false,
+			lost: false,
+		});
+		this.resetTiles();
+	}
+
 	checkTiles(e) {
 		// check win or not
 		if (this.state.win) {
@@ -556,6 +555,36 @@ class App extends Component {
 		}
 	}
 
+	changePreset(e) {
+		console.log(e.target.value);
+		var chosen = e.target.value;
+		if (chosen === "Easy") {
+			this.setState({
+				dimensions: 9,
+				maxTunnels: 85,
+				maxLength: 45,
+			});
+		} else if (chosen === "Medium") {
+			this.setState({
+				dimensions: 16,
+				maxTunnels: 120,
+				maxLength: 60,
+			});
+		} else if (chosen === "Hard") {
+			this.setState({
+				dimensions: 22,
+				maxTunnels: 200,
+				maxLength: 100,
+			});
+		} else if (chosen === "Very Hard") {
+			this.setState({
+				dimensions: 28,
+				maxTunnels: 220,
+				maxLength: 130,
+			});
+		}
+	}
+
 	render() {
 		let grid = this.createMap();
 
@@ -575,8 +604,17 @@ class App extends Component {
 						<input className='form-control' name='maxLength' type='number' min='1' max='1000' value={this.state.maxLength} onChange={this.onChange} />
 					</div>
 					<div className='inline'>
-						<label>Change</label>
-						<input className='form-control' type='button' onClick={this.changeTiles} value={"Change Map"} />
+						<label>Preset</label>
+						<select className='form-control' name='preset' onChange={this.changePreset}>
+							<option value='Easy'>Easy (9x9)</option>
+							<option value='Medium'>Medium (16x16)</option>
+							<option value='Hard'>Hard (22x22)</option>
+							<option value='Very Hard'>Very Hard (28x28)</option>
+						</select>
+					</div>
+					<div className='inline'>
+						<label>Generate</label>
+						<input className='form-control' type='button' onClick={this.generateNew} value={"Regenerate"} />
 					</div>
 				</div>
 				<table className='grid'>
