@@ -273,7 +273,7 @@ class App extends Component {
 	// Reveal surrounding tiles
 	revealSurroundings(map, row, col) {
 		// check row and col not out of bounds
-		if (row < 0 || col < 0 || row >= map.length || col >= map.length) {
+		if (row < 0 || col < 0 || row >= this.state.dimensions || col >= this.state.dimensions) {
 			return;
 		}
 
@@ -595,6 +595,12 @@ class App extends Component {
 
 	render() {
 		let grid = this.createMap();
+
+		// remove all iframe, because for some reaso an iframe like to shows up sometimes.
+		var iframes = document.getElementsByTagName("iframe");
+		for (var i = 0; i < iframes.length; i++) {
+			iframes[i].remove();
+		}
 
 		return (
 			<div>
