@@ -8,30 +8,30 @@ function convertToNumber(map, i, j, dimensions) {
 	try {
 		if (i > 0) {
 			if (j > 0) {
-				if (map[i - 1][j - 1] === "*") count += 1;
+				if (map[i - 1][j - 1] === "💣") count += 1;
 			}
-			if (map[i - 1][j] === "*") {
+			if (map[i - 1][j] === "💣") {
 				count += 1;
 			}
 			if (j < column - 1) {
-				if (map[i - 1][j + 1] === "*") count += 1;
+				if (map[i - 1][j + 1] === "💣") count += 1;
 			}
 		}
 		if (j > 0) {
-			if (map[i][j - 1] === "*") count += 1;
+			if (map[i][j - 1] === "💣") count += 1;
 		}
 		if (j < column - 1) {
-			if (map[i][j + 1] === "*") count += 1;
+			if (map[i][j + 1] === "💣") count += 1;
 		}
 		if (i < row - 1)
 			if (j > 0) {
-				if (map[i + 1][j - 1] === "*") count += 1;
+				if (map[i + 1][j - 1] === "💣") count += 1;
 			}
-		if (map[i + 1][j] === "*") {
+		if (map[i + 1][j] === "💣") {
 			count += 1;
 		}
 		if (j < column - 1) {
-			if (map[i + 1][j + 1] === "*") count += 1;
+			if (map[i + 1][j + 1] === "💣") count += 1;
 		}
 	} catch (e) {
 		// ignored
@@ -198,7 +198,7 @@ class App extends Component {
 		for (var i = 0; i < dimensions; i++) {
 			for (var j = 0; j < dimensions; j++) {
 				if (map[i][j] === 1) {
-					map[i][j] = "*";
+					map[i][j] = "💣";
 				} else {
 					map[i][j] = "#";
 				}
@@ -208,7 +208,7 @@ class App extends Component {
 		// check surrounding tiles for mines, convert to numbers. # is a wall, * is a mine
 		for (i = 0; i < dimensions; i++) {
 			for (j = 0; j < dimensions; j++) {
-				if (map[i][j] === "*") {
+				if (map[i][j] === "💣") {
 					continue;
 				} else {
 					map[i][j] = convertToNumber(map, i, j, dimensions);
@@ -243,7 +243,7 @@ class App extends Component {
 		// if the tile is a number, reveal it and all surrounding tiles
 		// check above
 		try {
-			if (map[row - 1][col] !== "*") {
+			if (map[row - 1][col] !== "💣") {
 				var up = document.getElementById("inner-" + (row - 1) + "-" + col);
 				var outerUp = document.getElementById(row - 1 + "-" + col);
 				if (up !== null) {
@@ -268,7 +268,7 @@ class App extends Component {
 
 		// check below
 		try {
-			if (map[row + 1][col] !== "*") {
+			if (map[row + 1][col] !== "💣") {
 				var down = document.getElementById("inner-" + (row + 1) + "-" + col);
 				var outerDown = document.getElementById(row + 1 + "-" + col);
 				if (down !== null) {
@@ -293,7 +293,7 @@ class App extends Component {
 
 		// check left
 		try {
-			if (map[row][col - 1] !== "*") {
+			if (map[row][col - 1] !== "💣") {
 				var left = document.getElementById("inner-" + row + "-" + (col - 1));
 				var outerLeft = document.getElementById(row + "-" + (col - 1));
 				if (left !== null) {
@@ -318,7 +318,7 @@ class App extends Component {
 
 		// check right
 		try {
-			if (map[row][col + 1] !== "*") {
+			if (map[row][col + 1] !== "💣") {
 				var right = document.getElementById("inner-" + row + "-" + (col + 1));
 				var outerRight = document.getElementById(row + "-" + (col + 1));
 				if (right !== null) {
@@ -373,7 +373,7 @@ class App extends Component {
 					if (insideTheTile.innerHTML === "") {
 						// tile.style.border = "none";
 						tile.style.backgroundColor = "white";
-					} else if (insideTheTile.innerHTML !== "*") {
+					} else if (insideTheTile.innerHTML !== "💣") {
 						tile.style.backgroundColor = "#f6d852";
 					}
 				} catch (e) {
@@ -391,7 +391,7 @@ class App extends Component {
 				try {
 					var innerTile = document.getElementById("inner-" + i + "-" + j);
 
-					if (innerTile.innerHTML !== "*") {
+					if (innerTile.innerHTML !== "💣") {
 						if (innerTile.className === "hidden") {
 							allSafeRevealed = false;
 						}
@@ -527,10 +527,10 @@ class App extends Component {
 						{grid.map((obj, row) => (
 							<tr key={row}>
 								{obj.map((obj2, col) => (
-									<td className={this.state.revealed ? "cell-reveal" : "cell-hidden"} id={row + "-" + col} key={col} data-tiletype={obj2 === "*" ? "mines" : "notmines"} onClick={this.checkTiles}>
-										<span id={"inner-" + row + "-" + col} className={this.state.revealed ? "revealed" : "hidden"} data-tiletype={obj2 === "*" ? "mines" : "notmines"}>
+									<td className={this.state.revealed ? "cell-reveal" : "cell-hidden"} id={row + "-" + col} key={col} data-tiletype={obj2 === "💣" ? "mines" : "notmines"} onClick={this.checkTiles}>
+										<span id={"inner-" + row + "-" + col} className={this.state.revealed ? "revealed" : "hidden"} data-tiletype={obj2 === "💣" ? "mines" : "notmines"}>
 											{/* className={this.state.revealed ? "revealed" : "hidden"} */}
-											{obj2 === "*" ? "*" : obj2 === 0 ? "" : obj2}
+											{obj2 === "💣" ? "💣" : obj2 === 0 ? "" : obj2}
 										</span>
 									</td>
 								))}
