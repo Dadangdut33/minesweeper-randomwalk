@@ -139,28 +139,28 @@ class App extends Component {
 		console.log(this.state.currMap);
 	}
 
-	//lets create a randomly generated map for our dungeon crawler
+	// create a randomly generated map
 	createMap() {
 		let dimensions = this.state.dimensions, // width and height of the map
 			maxTunnels = this.state.maxTunnels, // max number of tunnels possible
 			maxLength = this.state.maxLength, // max length each tunnel can have
 			map = this.createArray(1, dimensions), // create a 2d array full of 1's
-			currentRow = Math.floor(Math.random() * dimensions), // our current row - start at a random spot
-			currentColumn = Math.floor(Math.random() * dimensions), // our current column - start at a random spot
+			currentRow = Math.floor(Math.random() * dimensions), // the current row - start at a random spot
+			currentColumn = Math.floor(Math.random() * dimensions), // the current column - start at a random spot
 			directions = [
 				[-1, 0],
 				[1, 0],
 				[0, -1],
 				[0, 1],
 			], // array to get a random direction from (left,right,up,down)
-			lastDirection = [], // save the last direction we went
+			lastDirection = [], // save the last direction it went
 			randomDirection; // next turn/direction - holds a value from directions
 
 		// lets create some tunnels - while maxTunnels, dimentions, and maxLength  is greater than 0.
 		while (maxTunnels && dimensions && maxLength) {
-			// lets get a random direction - until it is a perpendicular to our lastDirection
+			// lets get a random direction - until it is a perpendicular to the lastDirection
 			// if the last direction = left or right,
-			// then our new direction has to be up or down,
+			// then the new direction has to be up or down,
 			// and vice versa
 			do {
 				randomDirection = directions[Math.floor(Math.random() * directions.length)];
@@ -169,7 +169,7 @@ class App extends Component {
 			var randomLength = Math.ceil(Math.random() * maxLength), //length the next tunnel will be (max of maxLength)
 				tunnelLength = 0; //current length of tunnel being created
 
-			// lets loop until our tunnel is long enough or until we hit an edge
+			// lets loop until tunnel is long enough or until it hit an edge
 			while (tunnelLength < randomLength) {
 				//break the loop if it is going out of the map
 				if (
@@ -181,15 +181,15 @@ class App extends Component {
 					break;
 				} else {
 					map[currentRow][currentColumn] = 0; //set the value of the index in map to 0 (a tunnel, making it one longer)
-					currentRow += randomDirection[0]; //add the value from randomDirection to row and col (-1, 0, or 1) to update our location
+					currentRow += randomDirection[0]; //add the value from randomDirection to row and col (-1, 0, or 1) to update the location
 					currentColumn += randomDirection[1];
 					tunnelLength++; //the tunnel is now one longer, so lets increment that variable
 				}
 			}
 
 			if (tunnelLength) {
-				// update our variables unless our last loop broke before we made any part of a tunnel
-				lastDirection = randomDirection; //set lastDirection, so we can remember what way we went
+				// update the variables unless the last loop broke beforeit made any part of a tunnel
+				lastDirection = randomDirection; //set lastDirection, so it can remember what way it went
 				maxTunnels--; // we created a whole tunnel so lets decrement how many we have left to create
 			}
 		}
@@ -231,7 +231,7 @@ class App extends Component {
 			map = this.state.currMap;
 		}
 
-		return map; // all our tunnels have been created and our map is complete, so lets return it to our render()
+		return map; // all the tunnels have been created and the map is complete, so lets return it to render()
 	}
 
 	revealSurroundings(map, row, col) {
