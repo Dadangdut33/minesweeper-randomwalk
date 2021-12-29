@@ -53,13 +53,14 @@ class App extends Component {
 			currMap: [],
 			win: false,
 			lost: false,
+			showWin: false,
 		};
 		this.onChange = this.onChange.bind(this);
 		this.checkTiles = this.checkTiles.bind(this);
 		this.mapCheat = this.mapCheat.bind(this);
 		this.changeTiles = this.changeTiles.bind(this);
 		this.checkWin = this.checkWin.bind(this);
-		this.alertWinPoll = this.alertWinPoll.bind(this);
+		this.hideSHowWin = this.hideSHowWin.bind(this);
 	}
 
 	createArray(num, dimensions) {
@@ -224,8 +225,8 @@ class App extends Component {
 				reset: false,
 				win: false,
 				lose: false,
+				showWin: false,
 			});
-			this.alertWinPoll();
 		} else {
 			map = this.state.currMap;
 		}
@@ -405,6 +406,7 @@ class App extends Component {
 		if (allSafeRevealed) {
 			this.setState({
 				win: true,
+				showWin: true,
 			});
 		} else {
 			this.setState({
@@ -413,18 +415,10 @@ class App extends Component {
 		}
 	}
 
-	alertWinPoll() {
-		// check every 0.1 second
-		var showAlert = true;
-		var isWon = setInterval(() => {
-			if (this.state.win) {
-				clearInterval(isWon);
-				if (showAlert) {
-					showAlert = false;
-					alert("You Won!");
-				}
-			}
-		}, 500);
+	hideSHowWin() {
+		this.setState({
+			showWin: false,
+		});
 	}
 
 	checkTiles(e) {
@@ -552,6 +546,14 @@ class App extends Component {
 					<div className='inline'>
 						<label>State</label>
 						<input className='form-control default-cursor' type='button' value={this.state.win ? "Win" : this.state.lost ? "Lost" : "‏‏‎ ‎"} />
+					</div>
+					<div className={this.state.showWin ? "block" : "hidden"} id='win-popup'>
+						<div className='popup'>
+							<div className='popup-content'>
+								<h2>Congratulations! You Won the game!</h2>
+								<input className='form-control' type='button' onClick={this.hideSHowWin} value={"Okay"} />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
