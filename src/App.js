@@ -222,7 +222,13 @@ class App extends Component {
 				) {
 					break;
 				} else {
-					map[currentRow][currentColumn] = 0; //set the value of the index in map to 0 (a tunnel, making it one longer)
+					// randomize between tunnel or bomb
+					if (Math.random() > 0.5) {
+						map[currentRow][currentColumn] = 0; // not bomb
+					} else {
+						map[currentRow][currentColumn] = 2; // bomb
+					}
+
 					currentRow += randomDirection[0]; //add the value from randomDirection to row and col (-1, 0, or 1) to update the location
 					currentColumn += randomDirection[1];
 					tunnelLength++; //the tunnel is now one longer, so lets increment that variable
@@ -240,7 +246,7 @@ class App extends Component {
 		// based on the walls and tunnel, create a minesweeper map
 		for (var i = 0; i < dimensions; i++) {
 			for (var j = 0; j < dimensions; j++) {
-				if (map[i][j] === 1) {
+				if (map[i][j] === 2) {
 					map[i][j] = "💣";
 					bombCounter++;
 				} else {
@@ -448,26 +454,26 @@ class App extends Component {
 		if (chosen === "Easy") {
 			this.setState({
 				dimensions: 9,
-				maxTunnels: 85,
-				maxLength: 45,
+				maxTunnels: 7,
+				maxLength: 13,
 			});
 		} else if (chosen === "Medium") {
 			this.setState({
 				dimensions: 16,
-				maxTunnels: 120,
+				maxTunnels: 20,
 				maxLength: 60,
 			});
 		} else if (chosen === "Hard") {
 			this.setState({
 				dimensions: 22,
-				maxTunnels: 200,
-				maxLength: 100,
+				maxTunnels: 45,
+				maxLength: 80,
 			});
 		} else if (chosen === "Very Hard") {
 			this.setState({
 				dimensions: 28,
-				maxTunnels: 220,
-				maxLength: 130,
+				maxTunnels: 60,
+				maxLength: 110,
 			});
 		}
 	}
