@@ -48,10 +48,11 @@ td {
   width: 2em;
   height: 2em;
   text-align: center;
+  box-shadow: 0 0 10px #9ecaed;
 }
 
 .cell-hidden {
-  background: #eee;
+  background: rgb(233, 226, 226);
   /* create surrounding border */
   border: 1px solid #ccc;
 }
