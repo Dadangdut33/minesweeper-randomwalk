@@ -18,28 +18,42 @@ function convertToNumber(map, i, j, dimensions) {
 				if (map[i - 1][j + 1] === "💣") count += 1;
 			}
 		}
+
 		if (j > 0) {
 			if (map[i][j - 1] === "💣") count += 1;
 		}
+
 		if (j < column - 1) {
 			if (map[i][j + 1] === "💣") count += 1;
 		}
-		if (i < row - 1)
+
+		if (i < row - 1) {
 			if (j > 0) {
 				if (map[i + 1][j - 1] === "💣") count += 1;
 			}
+		}
+
 		if (map[i + 1][j] === "💣") {
 			count += 1;
 		}
+
 		if (j < column - 1) {
 			if (map[i + 1][j + 1] === "💣") count += 1;
 		}
 	} catch (e) {
-		// ignored
+		/* ignored */
 		// console.log(e);
 	} finally {
 		return count;
 	}
+}
+
+function isNumeric(str) {
+	if (typeof str != "string") return false; // we only process strings!
+	return (
+		!isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+		!isNaN(parseFloat(str))
+	); // ...and ensure strings of whitespace fail
 }
 
 class App extends Component {
@@ -270,112 +284,123 @@ class App extends Component {
 		return map; // all the tunnels have been created and the map is complete, so lets return it to render()
 	}
 
+	checkForNum(rowId, colId) {
+		console.log("checknum", rowId, colId);
+		rowId = parseInt(rowId);
+		colId = parseInt(colId);
+
+		var up = document.getElementById("inner-" + (rowId - 1) + "-" + colId);
+		var outerUp = document.getElementById(rowId - 1 + "-" + colId);
+		var down = document.getElementById("inner-" + (rowId + 1) + "-" + colId);
+		var outerDown = document.getElementById(rowId + 1 + "-" + colId);
+		var left = document.getElementById("inner-" + rowId + "-" + (colId - 1));
+		var outerLeft = document.getElementById(rowId + "-" + (colId - 1));
+		var right = document.getElementById("inner-" + rowId + "-" + (colId + 1));
+		var outerRight = document.getElementById(rowId + "-" + (colId + 1));
+		if (up && isNumeric(up.innerHTML) && up.className !== "revealed") {
+			up.className = "revealed";
+			outerUp.style.backgroundColor = "#f6d852";
+		}
+		if (down && isNumeric(down.innerHTML) && down.className !== "revealed") {
+			down.className = "revealed";
+			outerDown.style.backgroundColor = "#f6d852";
+		}
+		if (left && isNumeric(left.innerHTML) && left.className !== "revealed") {
+			left.className = "revealed";
+			outerLeft.style.backgroundColor = "#f6d852";
+		}
+		if (right && isNumeric(right.innerHTML) && right.className !== "revealed") {
+			right.className = "revealed";
+			outerRight.style.backgroundColor = "#f6d852";
+		}
+	}
+
 	// Reveal surrounding tiles
 	revealSurroundings(map, row, col) {
 		// check row and col not out of bounds
-		if (row < 0 || col < 0 || row >= this.state.dimensions || col >= this.state.dimensions) {
-			return;
-		}
+		// if (row < 0 || col < 0 || row >= this.state.dimensions || col >= this.state.dimensions) {
+		// 	return;
+		// }
 
-		// if the tile is a number, reveal it and all surrounding tiles
+		// if the tile is a number, reveal it and the surrounding tiles
+		row = parseInt(row);
+		col = parseInt(col);
+		console.log("chec", row, col);
+
 		// check above
-		try {
-			if (map[row - 1][col] !== "💣") {
-				var up = document.getElementById("inner-" + (row - 1) + "-" + col);
-				var outerUp = document.getElementById(row - 1 + "-" + col);
-				if (up !== null) {
-					up.className = "revealed";
-					if (up.innerHTML === "") {
-						if (outerUp.style.backgroundColor !== "white") {
-							// outerUp.style.border = "none";
-							outerUp.style.backgroundColor = "white";
+		var up = document.getElementById("inner-" + (row - 1) + "-" + col);
+		var outerUp = document.getElementById(row - 1 + "-" + col);
+		if (up && up.innerHTML !== "💣") {
+			// if empty, reveal their surrounding
+			if (up.innerHTML === "" && up.className !== "revealed") {
+				up.className = "revealed";
+				// check already revealed or not
+				if (outerUp.style.backgroundColor !== "white") {
+					// outerUp.style.border = "none";
+					outerUp.style.backgroundColor = "white";
 
-							// if empty then check for another empty tile
-							this.revealSurroundings(map, row - 1, col);
-						}
-					} else {
-						outerUp.style.backgroundColor = "#f6d852";
-					}
+					// if empty then check for another empty tile
+					this.checkForNum(row - 1, col);
+					this.revealSurroundings(map, row - 1, col);
 				}
 			}
-		} catch (e) {
-			/* Ignored */
-			// console.log("up" + e);
 		}
 
 		// check below
-		try {
-			if (map[row + 1][col] !== "💣") {
-				var down = document.getElementById("inner-" + (row + 1) + "-" + col);
-				var outerDown = document.getElementById(row + 1 + "-" + col);
-				if (down !== null) {
-					down.className = "revealed";
-					if (down.innerHTML === "") {
-						if (outerDown.style.backgroundColor !== "white") {
-							// outerDown.style.border = "none";
-							outerDown.style.backgroundColor = "white";
+		var down = document.getElementById("inner-" + (row + 1) + "-" + col);
+		var outerDown = document.getElementById(row + 1 + "-" + col);
+		if (down && down.innerHTML !== "💣") {
+			// if empty, reveal their surrounding
+			if (down.innerHTML === "" && down.className !== "revealed") {
+				down.className = "revealed";
+				// check already revealed or not
+				if (outerDown.style.backgroundColor !== "white") {
+					// outerDown.style.border = "none";
+					outerDown.style.backgroundColor = "white";
 
-							// if empty then check for another empty tile
-							this.revealSurroundings(map, row + 1, col);
-						}
-					} else {
-						outerDown.style.backgroundColor = "#f6d852";
-					}
+					// if empty then check for another empty tile
+					this.checkForNum(row + 1, col);
+					this.revealSurroundings(map, row + 1, col);
 				}
 			}
-		} catch (e) {
-			/* Ignored */
-			// console.log("bellow" + e);
 		}
 
 		// check left
-		try {
-			if (map[row][col - 1] !== "💣") {
-				var left = document.getElementById("inner-" + row + "-" + (col - 1));
-				var outerLeft = document.getElementById(row + "-" + (col - 1));
-				if (left !== null) {
-					left.className = "revealed";
-					if (left.innerHTML === "") {
-						if (outerLeft.style.backgroundColor !== "white") {
-							// outerLeft.style.border = "none";
-							outerLeft.style.backgroundColor = "white";
+		var left = document.getElementById("inner-" + row + "-" + (col - 1));
+		var outerLeft = document.getElementById(row + "-" + (col - 1));
+		if (left && left.innerHTML !== "💣") {
+			// if empty, reveal their surrounding
+			if (left.innerHTML === "" && left.className !== "revealed") {
+				left.className = "revealed";
+				// check already revealed or not
+				if (outerLeft.style.backgroundColor !== "white") {
+					// outerLeft.style.border = "none";
+					outerLeft.style.backgroundColor = "white";
 
-							// if empty then check for another empty tile
-							this.revealSurroundings(map, row, col - 1);
-						}
-					} else {
-						outerLeft.style.backgroundColor = "#f6d852";
-					}
+					// if empty then check for another empty tile
+					this.checkForNum(row, col - 1);
+					this.revealSurroundings(map, row, col - 1);
 				}
 			}
-		} catch (e) {
-			/* Ignored */
-			// console.log("left" + e);
 		}
 
 		// check right
-		try {
-			if (map[row][col + 1] !== "💣") {
-				var right = document.getElementById("inner-" + row + "-" + (col + 1));
-				var outerRight = document.getElementById(row + "-" + (col + 1));
-				if (right !== null) {
-					right.className = "revealed";
-					if (right.innerHTML === "") {
-						if (outerRight.style.backgroundColor !== "white") {
-							// outerRight.style.border = "none";
-							outerRight.style.backgroundColor = "white";
+		var right = document.getElementById("inner-" + row + "-" + (col + 1));
+		var outerRight = document.getElementById(row + "-" + (col + 1));
+		if (right && right.innerHTML !== "💣") {
+			// if empty, reveal their surrounding
+			if (right.innerHTML === "" && right.className !== "revealed") {
+				right.className = "revealed";
+				// check already revealed or not
+				if (outerRight.style.backgroundColor !== "white") {
+					// outerRight.style.border = "none";
+					outerRight.style.backgroundColor = "white";
 
-							// if empty then check for another empty tile
-							this.revealSurroundings(map, row, col + 1);
-						}
-					} else {
-						outerRight.style.backgroundColor = "#f6d852";
-					}
+					// if empty then check for another empty tile
+					this.checkForNum(row, col + 1);
+					this.revealSurroundings(map, row, col + 1);
 				}
 			}
-		} catch (e) {
-			/* Ignored */
-			// console.log("right" + e);
 		}
 	}
 
@@ -393,10 +418,7 @@ class App extends Component {
 					} else if (insideTheTile.innerHTML !== "💣") {
 						tile.style.backgroundColor = "#f6d852";
 					}
-				} catch (e) {
-					/* Ignored */
-					// console.log("checkTiles" + e);
-				}
+				} catch (e) {}
 			}
 		}
 	}
@@ -413,10 +435,7 @@ class App extends Component {
 					tile.style.backgroundColor = "";
 
 					innerTile.className = "hidden";
-				} catch (e) {
-					/* Ignored */
-					// console.log("checkTiles" + e);
-				}
+				} catch (e) {}
 			}
 		}
 	}
@@ -565,17 +584,20 @@ class App extends Component {
 						innerTile.className = "revealed";
 
 						var outer = document.getElementById(e.target.id);
+						// id is row-col, separate it
+						var row = e.target.id.split("-")[0];
+						var col = e.target.id.split("-")[1];
+
 						// check empty content
 						if (innerTile.innerHTML === "") {
 							// outer.style.border = "none";
 							outer.style.backgroundColor = "white";
+							this.checkForNum(row, col);
 						} else {
 							outer.style.backgroundColor = "#f6d852";
 						}
-						// id is row-col
-						// separate it
-						var row = e.target.id.split("-")[0];
-						var col = e.target.id.split("-")[1];
+
+						// reveeal surroundings tiles!
 						this.revealSurroundings(this.state.currMap, row, col);
 
 						var currentMove = this.state.totalMoves;
