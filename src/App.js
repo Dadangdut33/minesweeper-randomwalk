@@ -285,10 +285,10 @@ class App extends Component {
 	}
 
 	checkForNum(rowId, colId) {
-		console.log("checknum", rowId, colId);
 		rowId = parseInt(rowId);
 		colId = parseInt(colId);
 
+		// reveal cell if number and is not already revealed
 		var up = document.getElementById("inner-" + (rowId - 1) + "-" + colId);
 		var outerUp = document.getElementById(rowId - 1 + "-" + colId);
 		var down = document.getElementById("inner-" + (rowId + 1) + "-" + colId);
@@ -317,15 +317,9 @@ class App extends Component {
 
 	// Reveal surrounding tiles
 	revealSurroundings(map, row, col) {
-		// check row and col not out of bounds
-		// if (row < 0 || col < 0 || row >= this.state.dimensions || col >= this.state.dimensions) {
-		// 	return;
-		// }
-
-		// if the tile is a number, reveal it and the surrounding tiles
+		// parse to int because sometimes it comes in as a string
 		row = parseInt(row);
 		col = parseInt(col);
-		console.log("chec", row, col);
 
 		// check above
 		var up = document.getElementById("inner-" + (row - 1) + "-" + col);
