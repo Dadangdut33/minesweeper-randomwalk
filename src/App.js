@@ -627,7 +627,7 @@ class App extends Component {
 		}
 
 		return (
-			<div>
+			<div className='container'>
 				<div className='form-group row text-center'>
 					<div className='inline'>
 						<label>dimensions</label>
