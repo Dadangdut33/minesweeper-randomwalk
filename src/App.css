@@ -52,7 +52,7 @@ td {
 }
 
 .cell-hidden {
-  background: rgb(233, 226, 226);
+  background: rgb(240, 235, 235);
   /* create surrounding border */
   border: 1px solid #ccc;
 }
