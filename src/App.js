@@ -255,12 +255,10 @@ class App extends Component {
 			}
 		}
 
-		// check surrounding tiles for mines, convert to numbers. # is a wall, 💣 is a mine
+		// check surrounding tiles for mines, convert to numbers. 💣 is a mine
 		for (i = 0; i < dimensions; i++) {
 			for (j = 0; j < dimensions; j++) {
-				if (map[i][j] === "💣") {
-					continue;
-				} else {
+				if (map[i][j] !== "💣") {
 					map[i][j] = convertToNumber(map, i, j, dimensions);
 				}
 			}
