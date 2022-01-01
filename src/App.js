@@ -299,19 +299,19 @@ class App extends Component {
 		var outerRight = document.getElementById(rowId + "-" + (colId + 1));
 		if (up && isNumeric(up.innerHTML) && up.className !== "revealed") {
 			up.className = "revealed";
-			outerUp.style.backgroundColor = "#f6d852";
+			outerUp.style.backgroundColor = "#dedede";
 		}
 		if (down && isNumeric(down.innerHTML) && down.className !== "revealed") {
 			down.className = "revealed";
-			outerDown.style.backgroundColor = "#f6d852";
+			outerDown.style.backgroundColor = "#dedede";
 		}
 		if (left && isNumeric(left.innerHTML) && left.className !== "revealed") {
 			left.className = "revealed";
-			outerLeft.style.backgroundColor = "#f6d852";
+			outerLeft.style.backgroundColor = "#dedede";
 		}
 		if (right && isNumeric(right.innerHTML) && right.className !== "revealed") {
 			right.className = "revealed";
-			outerRight.style.backgroundColor = "#f6d852";
+			outerRight.style.backgroundColor = "#dedede";
 		}
 	}
 
@@ -410,7 +410,7 @@ class App extends Component {
 						// tile.style.border = "none";
 						tile.style.backgroundColor = "white";
 					} else if (insideTheTile.innerHTML !== "💣") {
-						tile.style.backgroundColor = "#f6d852";
+						tile.style.backgroundColor = "#dedede";
 					}
 				} catch (e) {}
 			}
@@ -595,7 +595,7 @@ class App extends Component {
 							outer.style.backgroundColor = "white";
 							this.checkForNum(row, col);
 						} else {
-							outer.style.backgroundColor = "#f6d852";
+							outer.style.backgroundColor = "#dedede";
 						}
 
 						// reveeal surroundings tiles!
