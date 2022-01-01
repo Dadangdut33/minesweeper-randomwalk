@@ -73,7 +73,7 @@ class App extends Component {
 			totalMoves: 0,
 			timer: 0,
 			timerStr: "00 : 00 : 00",
-			playing: true,
+			playing: false,
 			timerStarted: false,
 		};
 		this.onChange = this.onChange.bind(this);
@@ -139,7 +139,7 @@ class App extends Component {
 	// timer
 	startTimer() {
 		var timer = setInterval(() => {
-			if (!this.state.playing) {
+			if (!this.state.timerStarted) {
 				clearInterval(timer);
 				return;
 			}
@@ -273,7 +273,7 @@ class App extends Component {
 				totalMoves: 0,
 				timer: 0,
 				timerStr: "00 : 00 : 00",
-				playing: true,
+				playing: false,
 				timerStarted: false,
 			});
 		} else {
@@ -333,7 +333,7 @@ class App extends Component {
 					// outerUp.style.border = "none";
 					outerUp.style.backgroundColor = "white";
 
-					// if empty then check for another empty tile
+					// if empty then check for numbers and reveal them, also check for another empty tiles
 					this.checkForNum(row - 1, col);
 					this.revealSurroundings(map, row - 1, col);
 				}
@@ -352,7 +352,7 @@ class App extends Component {
 					// outerDown.style.border = "none";
 					outerDown.style.backgroundColor = "white";
 
-					// if empty then check for another empty tile
+					// if empty then check for numbers and reveal them, also check for another empty tiles
 					this.checkForNum(row + 1, col);
 					this.revealSurroundings(map, row + 1, col);
 				}
@@ -371,7 +371,7 @@ class App extends Component {
 					// outerLeft.style.border = "none";
 					outerLeft.style.backgroundColor = "white";
 
-					// if empty then check for another empty tile
+					// if empty then check for numbers and reveal them, also check for another empty tiles
 					this.checkForNum(row, col - 1);
 					this.revealSurroundings(map, row, col - 1);
 				}
@@ -390,7 +390,7 @@ class App extends Component {
 					// outerRight.style.border = "none";
 					outerRight.style.backgroundColor = "white";
 
-					// if empty then check for another empty tile
+					// if empty then check for numbers and reveal them, also check for another empty tiles
 					this.checkForNum(row, col + 1);
 					this.revealSurroundings(map, row, col + 1);
 				}
@@ -499,7 +499,7 @@ class App extends Component {
 				win: true,
 				showWin: true,
 				revealed: true,
-				playing: false,
+				timerStarted: false,
 			});
 		} else {
 			this.setState({
@@ -547,11 +547,19 @@ class App extends Component {
 			return;
 		}
 
+		// if timer is not started then start the timer
 		if (!this.state.timerStarted) {
 			this.setState({
 				timerStarted: true,
 			});
 			this.startTimer();
+		}
+
+		// if not playing set playing
+		if (!this.state.playing) {
+			this.setState({
+				playing: true,
+			});
 		}
 
 		if (this.state.win === false) {
@@ -566,9 +574,8 @@ class App extends Component {
 				// reveal the map
 				this.setState({
 					revealed: true,
-					reset: false,
 					lost: true,
-					playing: false,
+					timerStarted: false,
 				});
 			} else {
 				var innerTile = document.getElementById("inner-" + e.target.id);
@@ -666,7 +673,7 @@ class App extends Component {
 				<div className='form-group row text-center'>
 					<div className='inline'>
 						<label>Status</label>
-						<input className='form-control default-cursor' type='button' value={this.state.win ? "Win" : this.state.lost ? "Lost" : "Playing"} />
+						<input className='form-control default-cursor' type='button' value={this.state.playing ? (this.state.lost ? "Lost" : this.state.win ? "Win" : "Playing") : "-"} />
 					</div>
 					<div className='inline'>
 						<label>Bomb</label>
