@@ -662,7 +662,6 @@ class App extends Component {
 								{obj.map((obj2, col) => (
 									<td className={this.state.revealed ? "cell-reveal" : "cell-hidden"} id={row + "-" + col} key={col} data-tiletype={obj2 === "💣" ? "mines" : "notmines"} onClick={this.checkTiles}>
 										<span id={"inner-" + row + "-" + col} className={this.state.revealed ? "revealed" : "hidden"} data-tiletype={obj2 === "💣" ? "mines" : "notmines"}>
-											{/* className={this.state.revealed ? "revealed" : "hidden"} */}
 											{obj2 === "💣" ? "💣" : obj2 === 0 ? "" : obj2}
 										</span>
 									</td>
