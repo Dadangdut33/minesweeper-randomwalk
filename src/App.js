@@ -299,19 +299,19 @@ class App extends Component {
 		var outerRight = document.getElementById(rowId + "-" + (colId + 1));
 		if (up && isNumeric(up.innerHTML) && up.className !== "revealed") {
 			up.className = "revealed";
-			outerUp.style.backgroundColor = "#dedede";
+			outerUp.style.backgroundColor = "white";
 		}
 		if (down && isNumeric(down.innerHTML) && down.className !== "revealed") {
 			down.className = "revealed";
-			outerDown.style.backgroundColor = "#dedede";
+			outerDown.style.backgroundColor = "white";
 		}
 		if (left && isNumeric(left.innerHTML) && left.className !== "revealed") {
 			left.className = "revealed";
-			outerLeft.style.backgroundColor = "#dedede";
+			outerLeft.style.backgroundColor = "white";
 		}
 		if (right && isNumeric(right.innerHTML) && right.className !== "revealed") {
 			right.className = "revealed";
-			outerRight.style.backgroundColor = "#dedede";
+			outerRight.style.backgroundColor = "white";
 		}
 	}
 
@@ -406,11 +406,8 @@ class App extends Component {
 					var tile = document.getElementById(i + "-" + j);
 					var insideTheTile = document.getElementById("inner-" + i + "-" + j);
 
-					if (insideTheTile.innerHTML === "") {
-						// tile.style.border = "none";
+					if (insideTheTile.innerHTML !== "💣") {
 						tile.style.backgroundColor = "white";
-					} else if (insideTheTile.innerHTML !== "💣") {
-						tile.style.backgroundColor = "#dedede";
 					}
 				} catch (e) {}
 			}
@@ -589,13 +586,11 @@ class App extends Component {
 						var row = e.target.id.split("-")[0];
 						var col = e.target.id.split("-")[1];
 
+						outer.style.backgroundColor = "white";
 						// check empty content
 						if (innerTile.innerHTML === "") {
 							// outer.style.border = "none";
-							outer.style.backgroundColor = "white";
 							this.checkForNum(row, col);
-						} else {
-							outer.style.backgroundColor = "#dedede";
 						}
 
 						// reveeal surroundings tiles!
