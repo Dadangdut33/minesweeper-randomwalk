@@ -1,3 +1,6 @@
+# About
+A minesweeper game made using React.js and randomwalk algorithm as the randomizer.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
