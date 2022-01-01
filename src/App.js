@@ -691,6 +691,18 @@ class App extends Component {
 						<label>Cheat</label>
 						<input className='form-control' name='cheat' type='button' onClick={this.mapCheat} value={"Show"} />
 					</div>
+					<div className='inline'>
+						<label>Sourcecode</label>
+						<input
+							className='form-control'
+							name='sourcecode'
+							type='button'
+							onClick={() => {
+								window.open("https://github.com/Dadangdut33/minesweeper-randomwalk", "_blank");
+							}}
+							value={"Github"}
+						/>
+					</div>
 				</div>
 				<div className={this.state.showWin ? "block" : "hidden"} id='win-popup'>
 					<div className='popup'>
