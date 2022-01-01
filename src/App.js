@@ -61,8 +61,8 @@ class App extends Component {
 		super(props);
 		this.state = {
 			dimensions: 9,
-			maxTunnels: 85,
-			maxLength: 45,
+			maxTunnels: 7,
+			maxLength: 13,
 			revealed: false,
 			reset: true,
 			currMap: [],
