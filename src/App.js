@@ -480,7 +480,6 @@ class App extends Component {
 	}
 
 	changePreset(e) {
-		console.log(e.target.value);
 		var chosen = e.target.value;
 		if (chosen === "Easy") {
 			this.setState({
@@ -599,8 +598,6 @@ class App extends Component {
 		if (this.state.win === false) {
 			// onclick, check if mine or not. if mine tell user lost
 			if (e.target.getAttribute("data-tiletype") === "mines") {
-				console.log("You lost!");
-
 				alert("You step on a mine. You lost!");
 
 				this.revealAll();
