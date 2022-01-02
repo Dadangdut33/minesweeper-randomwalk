@@ -670,8 +670,59 @@ class App extends Component {
 		}
 	}
 
+	scaleIncreaseDecrease(e) {
+		if (e.target.name === "scale-increase") {
+			// get all td element, increase their width and height by 10px
+			var allTd = document.getElementsByTagName("td");
+			// get the current width and height
+			var currentWidth = allTd[0].offsetWidth;
+			var currentHeight = allTd[0].offsetHeight;
+			// loop through all element and increase their width and height by 10px
+			for (var i = 0; i < allTd.length; i++) {
+				allTd[i].style.width = currentWidth + 10 + "px";
+				allTd[i].style.height = currentHeight + 10 + "px";
+			}
+			// save it in local storage
+			localStorage.setItem("currentWidth", currentWidth + 10);
+			localStorage.setItem("currentHeight", currentHeight + 10);
+		} else if (e.target.name === "scale-decrease") {
+			// get all td element, decrease their width and height by 10px
+			var allTd = document.getElementsByTagName("td");
+			// get the current width and height
+			var currentWidth = allTd[0].offsetWidth;
+			var currentHeight = allTd[0].offsetHeight;
+			// loop through all element and decrease their width and height by 10px
+			for (var i = 0; i < allTd.length; i++) {
+				allTd[i].style.width = currentWidth - 10 + "px";
+				allTd[i].style.height = currentHeight - 10 + "px";
+			}
+
+			// save it in local storage
+			localStorage.setItem("currentWidth", currentWidth - 10);
+			localStorage.setItem("currentHeight", currentHeight - 10);
+		}
+	}
+
+	setScale() {
+		// get the current width and height from localstorage if there is any
+		var currentWidth = localStorage.getItem("currentWidth");
+		var currentHeight = localStorage.getItem("currentHeight");
+		if (currentWidth !== null && currentHeight !== null) {
+			// get all td element, decrease their width and height by 10px
+			var allTd = document.getElementsByTagName("td");
+			// loop through all element and decrease their width and height by 10px
+			for (var i = 0; i < allTd.length; i++) {
+				allTd[i].style.width = currentWidth + "px";
+				allTd[i].style.height = currentHeight + "px";
+			}
+		}
+	}
+
 	render() {
 		let grid = this.createMap();
+
+		// set scale
+		this.setScale();
 
 		// remove all iframe, because for some reaso an iframe like to shows up sometimes.
 		var iframes = document.getElementsByTagName("iframe");
@@ -706,6 +757,13 @@ class App extends Component {
 					<div className='inline'>
 						<label>Generate</label>
 						<input className='form-control' type='button' onClick={this.generateNew} value={"Regenerate"} />
+					</div>
+					<div className='inline'>
+						<label>Scale</label>
+						<div className='flex-row-center'>
+							<input className='form-control' type='button' name='scale-increase' onClick={this.scaleIncreaseDecrease} value={"+"} />
+							<input className='form-control' type='button' name='scale-decrease' onClick={this.scaleIncreaseDecrease} value={"-"} />
+						</div>
 					</div>
 				</div>
 				<table className='grid'>
