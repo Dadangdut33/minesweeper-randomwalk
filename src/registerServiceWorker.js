@@ -8,7 +8,7 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
-var homepage = "https://dadangdut33.github.io/";
+var homepage = "https://dadangdut33.github.io";
 
 const isLocalhost = Boolean(
 	window.location.hostname === "localhost" ||
