@@ -115,22 +115,6 @@ td {
 	text-align: center;
 }
 
-/* .wall:before {
-  content: "1";
-}
-
-.tunnel:before {
-  content: "0";
-} */
-
-/* .wall {
-  background: #636363;
-}
-
-.tunnel {
-  background: transparent;
-} */
-
 .form-control {
 	width: 100%;
 	text-align: center;
@@ -138,9 +122,9 @@ td {
 }
 
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1000px) {
 	td {
-		width: 3.5em;
-		height: 3.5em;
+		width: 3.75em;
+		height: 3.75em;
 	}
 }
