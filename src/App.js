@@ -60,6 +60,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			debug: false,
 			dimensions: 9,
 			maxTunnels: 7,
 			maxLength: 13,
@@ -190,82 +191,114 @@ class App extends Component {
 			currentRow = Math.floor(Math.random() * dimensions), // the current row - start at a random spot
 			currentColumn = Math.floor(Math.random() * dimensions), // the current column - start at a random spot
 			directions = [
-				[-1, 0],
-				[1, 0],
-				[0, -1],
-				[0, 1],
+				[-1, 0], // left
+				[1, 0], // right
+				[0, -1], // up
+				[0, 1], // down
 			], // array to get a random direction from (left,right,up,down)
 			lastDirection = [], // save the last direction it went
 			randomDirection; // next turn/direction - holds a value from directions
 
-		// lets create some tunnels - while maxTunnels, dimentions, and maxLength  is greater than 0.
-		while (maxTunnels && dimensions && maxLength) {
-			// lets get a random direction - until it is a perpendicular to the lastDirection
-			// if the last direction = left or right,
-			// then the new direction has to be up or down,
-			// and vice versa
-			do {
-				randomDirection = directions[Math.floor(Math.random() * directions.length)];
-			} while ((randomDirection[0] === -lastDirection[0] && randomDirection[1] === -lastDirection[1]) || (randomDirection[0] === lastDirection[0] && randomDirection[1] === lastDirection[1]));
-
-			var randomLength = Math.ceil(Math.random() * maxLength), //length the next tunnel will be (max of maxLength)
-				tunnelLength = 0; //current length of tunnel being created
-
-			// lets loop until tunnel is long enough or until it hit an edge
-			while (tunnelLength < randomLength) {
-				//break the loop if it is going out of the map
-				if (
-					(currentRow === 0 && randomDirection[0] === -1) ||
-					(currentColumn === 0 && randomDirection[1] === -1) ||
-					(currentRow === dimensions - 1 && randomDirection[0] === 1) ||
-					(currentColumn === dimensions - 1 && randomDirection[1] === 1)
-				) {
-					break;
-				} else {
-					// randomize between tunnel or bomb
-					if (Math.random() > 0.5) {
-						map[currentRow][currentColumn] = 0; // not bomb
-					} else {
-						map[currentRow][currentColumn] = 2; // bomb
-					}
-
-					currentRow += randomDirection[0]; //add the value from randomDirection to row and col (-1, 0, or 1) to update the location
-					currentColumn += randomDirection[1];
-					tunnelLength++; //the tunnel is now one longer, so lets increment that variable
-				}
-			}
-
-			if (tunnelLength) {
-				// update the variables unless the last loop broke beforeit made any part of a tunnel
-				lastDirection = randomDirection; //set lastDirection, so it can remember what way it went
-				maxTunnels--; // we created a whole tunnel so lets decrement how many we have left to create
-			}
-		}
-
-		var bombCounter = 0; //counter for the number of bombs
-		// based on the walls and tunnel, create a minesweeper map
-		for (var i = 0; i < dimensions; i++) {
-			for (var j = 0; j < dimensions; j++) {
-				if (map[i][j] === 2) {
-					map[i][j] = "💣";
-					bombCounter++;
-				} else {
-					map[i][j] = "#";
-				}
-			}
-		}
-
-		// check surrounding tiles for mines, convert to numbers. 💣 is a mine
-		for (i = 0; i < dimensions; i++) {
-			for (j = 0; j < dimensions; j++) {
-				if (map[i][j] !== "💣") {
-					map[i][j] = convertToNumber(map, i, j, dimensions);
-				}
-			}
-		}
-
 		// if reset/create new map
 		if (this.state.reset) {
+			// DEBUG
+			if (this.state.debug) {
+				console.log("=".repeat(25));
+				console.log("CREATING A NEW MAP...");
+				console.log("Starting row: " + currentRow);
+				console.log("Starting column: " + currentColumn);
+			}
+
+			// lets create some tunnels - while maxTunnels, dimentions, and maxLength  is greater than 0.
+			while (maxTunnels && dimensions && maxLength) {
+				// lets get a random direction - until it is a perpendicular to the lastDirection
+				// if the last direction = left or right,
+				// then the new direction has to be up or down,
+				// and vice versa
+				do {
+					randomDirection = directions[Math.floor(Math.random() * directions.length)];
+				} while ((randomDirection[0] === -lastDirection[0] && randomDirection[1] === -lastDirection[1]) || (randomDirection[0] === lastDirection[0] && randomDirection[1] === lastDirection[1]));
+
+				var randomLength = Math.ceil(Math.random() * maxLength), //length the next tunnel will be (max of maxLength)
+					tunnelLength = 0; //current length of tunnel being created
+
+				// lets loop until tunnel is long enough or until it hit an edge
+				while (tunnelLength < randomLength) {
+					//break the loop if it is going out of the map
+					if (
+						(currentRow === 0 && randomDirection[0] === -1) ||
+						(currentColumn === 0 && randomDirection[1] === -1) ||
+						(currentRow === dimensions - 1 && randomDirection[0] === 1) ||
+						(currentColumn === dimensions - 1 && randomDirection[1] === 1)
+					) {
+						break;
+					} else {
+						// DEBUG
+						if (this.state.debug) {
+							console.log("=".repeat(25));
+							console.log("Current row: " + currentRow);
+							console.log("Current column: " + currentColumn);
+							console.log("Direction:");
+							console.log(randomDirection);
+						}
+
+						// randomize between tunnel or bomb
+						if (Math.random() > 0.5) {
+							map[currentRow][currentColumn] = 0; // not bomb
+
+							// DEBUG
+							if (this.state.debug) console.log("Created empty space");
+						} else {
+							map[currentRow][currentColumn] = 2; // bomb
+
+							// DEBUG
+							if (this.state.debug) console.log("Created Bomb");
+						}
+
+						currentRow += randomDirection[0]; //add the value from randomDirection to row and col (-1, 0, or 1) to update the location
+						currentColumn += randomDirection[1];
+						tunnelLength++; //the tunnel is now one longer, so lets increment that variable
+					}
+				}
+
+				if (tunnelLength) {
+					// update the variables unless the last loop broke beforeit made any part of a tunnel
+					lastDirection = randomDirection; //set lastDirection, so it can remember what way it went
+					maxTunnels--; // we created a whole tunnel so lets decrement how many we have left to create
+				}
+			}
+
+			var bombCounter = 0; //counter for the number of bombs
+			// based on the walls and tunnel, create a minesweeper map
+			for (var i = 0; i < dimensions; i++) {
+				for (var j = 0; j < dimensions; j++) {
+					if (map[i][j] === 2) {
+						map[i][j] = "💣";
+						bombCounter++;
+					} else {
+						map[i][j] = "#";
+					}
+				}
+			}
+
+			// check surrounding tiles for mines, convert to numbers. 💣 is a mine
+			for (i = 0; i < dimensions; i++) {
+				for (j = 0; j < dimensions; j++) {
+					if (map[i][j] !== "💣") {
+						map[i][j] = convertToNumber(map, i, j, dimensions);
+					}
+				}
+			}
+
+			if (this.state.debug) {
+				console.log("=".repeat(25));
+				console.log("MAP:");
+				console.log(map);
+				console.log("=".repeat(25));
+				console.log("BOMBS: " + bombCounter);
+				console.log("=".repeat(25));
+			}
+
 			// if reset/on start
 			this.setState({
 				currMap: map,
