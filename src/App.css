@@ -1,118 +1,118 @@
 html {
-  font-family: georgia, serif;
-  width: 100%;
-  height: 100%;
-  background: #636363;
+	font-family: georgia, serif;
+	width: 100%;
+	height: 100%;
+	background: #636363;
 }
 
 #root {
-  background: #636363;
+	background: #636363;
 }
 
 .container {
-  margin: 1em auto;
+	margin: 1em auto;
 }
 
 .inline {
-  text-align: center;
-  padding: 15px;
-  display: inline-block;
+	text-align: center;
+	padding: 15px;
+	display: inline-block;
 }
 
 label {
-  font-family: "Arial Black";
-  font-variant: small-caps;
-  font-size: 1.2em;
-  color: #333;
+	font-family: "Arial Black";
+	font-variant: small-caps;
+	font-size: 1.2em;
+	color: #333;
 }
 
 .grid {
-  margin: 1em auto;
-  background: linear-gradient(#f7aeb7, #ffcccc, #ffeee6);
+	margin: 1em auto;
+	background: linear-gradient(#f7aeb7, #ffcccc, #ffeee6);
 }
 
 iframe {
-  display: none;
+	display: none;
 }
 
 table {
-  border-collapse: collapse;
-  border-spacing: -1 !important;
+	border-collapse: collapse;
+	border-spacing: -1 !important;
 }
 
 td {
-  margin: 0;
-  padding: 0px;
-  min-width: auto;
-  min-height: auto;
-  width: 2em;
-  height: 2em;
-  text-align: center;
-  box-shadow: 0 0 10px #9ecaed;
+	margin: 0;
+	padding: 0px;
+	min-width: auto;
+	min-height: auto;
+	width: 2em;
+	height: 2em;
+	text-align: center;
+	box-shadow: 0 0 10px #9ecaed;
 }
 
 .cell-hidden {
-  background: rgb(240, 235, 235);
-  /* create surrounding border */
-  border: 1px solid #ccc;
+	background: rgb(240, 235, 235);
+	/* create surrounding border */
+	border: 1px solid #ccc;
 }
 
 .cell-hidden:hover {
-  background: #f7aeb7;
-  /* create surrounding border */
-  border: 1px solid #ccc;
+	background: #f7aeb7;
+	/* create surrounding border */
+	border: 1px solid #ccc;
 }
 
 .cell-reveal {
-  background: #f7aeb7;
-  /* create surrounding border */
-  border: 1px solid #ccc;
+	background: #f7aeb7;
+	/* create surrounding border */
+	border: 1px solid #ccc;
 }
 
 .hidden {
-  display: none !important;
+	display: none !important;
 }
 
 .block {
-  display: block !important;
+	display: block !important;
 }
 
 .revealed {
-  display: block;
-  color: blue;
+	display: block;
+	color: blue;
 }
 
 .default-cursor {
-  cursor: default !important;
+	cursor: default !important;
 }
 
 #win-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1;
+	display: none;
 }
 
 .popup {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  padding: 1em;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 2;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	padding: 1em;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	z-index: 2;
 }
 
 .popup-content {
-  margin: 0 auto;
-  width: 50%;
-  text-align: center;
+	margin: 0 auto;
+	width: 50%;
+	text-align: center;
 }
 
 /* .wall:before {
@@ -132,15 +132,15 @@ td {
 } */
 
 .form-control {
-  width: 100%;
-  text-align: center;
-  padding: 0 !important;
+	width: 100%;
+	text-align: center;
+	padding: 0 !important;
 }
 
 
 @media only screen and (min-width: 1200px) {
-  td {
-    width: 3.5em;
-    height: 3.5em;
-  }
+	td {
+		width: 3.5em;
+		height: 3.5em;
+	}
 }
