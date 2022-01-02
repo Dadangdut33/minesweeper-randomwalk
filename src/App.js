@@ -328,19 +328,44 @@ class App extends Component {
 		// reveal cell if number and is not already revealed
 		var up = document.getElementById("inner-" + (rowId - 1) + "-" + colId);
 		var outerUp = document.getElementById(rowId - 1 + "-" + colId);
+		var upperLeft = document.getElementById("inner-" + (rowId - 1) + "-" + (colId - 1));
+		var outerUpperLeft = document.getElementById(rowId - 1 + "-" + (colId - 1));
+		var upperRight = document.getElementById("inner-" + (rowId - 1) + "-" + (colId + 1));
+		var outerUpperRight = document.getElementById(rowId - 1 + "-" + (colId + 1));
 		var down = document.getElementById("inner-" + (rowId + 1) + "-" + colId);
 		var outerDown = document.getElementById(rowId + 1 + "-" + colId);
+		var lowerLeft = document.getElementById("inner-" + (rowId + 1) + "-" + (colId - 1));
+		var outerLowerLeft = document.getElementById(rowId + 1 + "-" + (colId - 1));
+		var lowerRight = document.getElementById("inner-" + (rowId + 1) + "-" + (colId + 1));
+		var outerLowerRight = document.getElementById(rowId + 1 + "-" + (colId + 1));
 		var left = document.getElementById("inner-" + rowId + "-" + (colId - 1));
 		var outerLeft = document.getElementById(rowId + "-" + (colId - 1));
 		var right = document.getElementById("inner-" + rowId + "-" + (colId + 1));
 		var outerRight = document.getElementById(rowId + "-" + (colId + 1));
+
 		if (up && isNumeric(up.innerHTML) && up.className !== "revealed") {
 			up.className = "revealed";
 			outerUp.style.backgroundColor = "white";
 		}
+		if (upperLeft && isNumeric(upperLeft.innerHTML) && upperLeft.className !== "revealed") {
+			upperLeft.className = "revealed";
+			outerUpperLeft.style.backgroundColor = "white";
+		}
+		if (upperRight && isNumeric(upperRight.innerHTML) && upperRight.className !== "revealed") {
+			upperRight.className = "revealed";
+			outerUpperRight.style.backgroundColor = "white";
+		}
 		if (down && isNumeric(down.innerHTML) && down.className !== "revealed") {
 			down.className = "revealed";
 			outerDown.style.backgroundColor = "white";
+		}
+		if (lowerLeft && isNumeric(lowerLeft.innerHTML) && lowerLeft.className !== "revealed") {
+			lowerLeft.className = "revealed";
+			outerLowerLeft.style.backgroundColor = "white";
+		}
+		if (lowerRight && isNumeric(lowerRight.innerHTML) && lowerRight.className !== "revealed") {
+			lowerRight.className = "revealed";
+			outerLowerRight.style.backgroundColor = "white";
 		}
 		if (left && isNumeric(left.innerHTML) && left.className !== "revealed") {
 			left.className = "revealed";
