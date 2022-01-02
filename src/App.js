@@ -86,6 +86,7 @@ class App extends Component {
 		this.formatTime = this.formatTime.bind(this);
 		this.changePreset = this.changePreset.bind(this);
 		this.generateNew = this.generateNew.bind(this);
+		this.scaleIncreaseDecrease = this.scaleIncreaseDecrease.bind(this);
 	}
 
 	// create array with number provided
@@ -700,6 +701,19 @@ class App extends Component {
 			// save it in local storage
 			localStorage.setItem("currentWidth", currentWidth - 10);
 			localStorage.setItem("currentHeight", currentHeight - 10);
+		} else if (e.target.name == "reset") {
+			// ask for confirmation if state is playing and not winning and not losing
+			if (this.state.playing && !this.state.win && !this.state.lost) {
+				if (window.confirm("Warning! Resetting the scale will refresh the page! So current game will be aborted. Are you sure you want to reset now?")) {
+					localStorage.setItem("currentWidth", null);
+					localStorage.setItem("currentHeight", null);
+					window.location.reload();
+				}
+			} else {
+				localStorage.setItem("currentWidth", null);
+				localStorage.setItem("currentHeight", null);
+				window.location.reload();
+			}
 		}
 	}
 
@@ -758,12 +772,16 @@ class App extends Component {
 						<label>Generate</label>
 						<input className='form-control' type='button' onClick={this.generateNew} value={"Regenerate"} />
 					</div>
-					<div className='inline'>
-						<label>Scale</label>
+					<div className='inline' style={{ paddingRight: "0px" }}>
+						<label style={{ paddingLeft: "30px" }}>Scale</label>
 						<div className='flex-row-center'>
 							<input className='form-control' type='button' name='scale-increase' onClick={this.scaleIncreaseDecrease} value={"+"} />
-							<input className='form-control' type='button' name='scale-decrease' onClick={this.scaleIncreaseDecrease} value={"-"} />
+							<input className='form-control' style={{ marginLeft: "2px" }} type='button' name='scale-decrease' onClick={this.scaleIncreaseDecrease} value={"-"} />
 						</div>
+					</div>
+					<div className='inline' style={{ paddingLeft: "2px" }}>
+						<label></label>
+						<input className='form-control' type='button' name='reset' onClick={this.scaleIncreaseDecrease} value={"Reset"} />
 					</div>
 				</div>
 				<table className='grid'>
