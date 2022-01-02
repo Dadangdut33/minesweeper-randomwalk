@@ -240,7 +240,16 @@ class App extends Component {
 							console.log("Current row: " + currentRow);
 							console.log("Current column: " + currentColumn);
 							console.log("Direction:");
-							console.log(randomDirection);
+							console.log("[", randomDirection[0], randomDirection[1], "]");
+							if (randomDirection[0] === -1) {
+								console.log("left");
+							} else if (randomDirection[0] === 1) {
+								console.log("right");
+							} else if (randomDirection[1] === -1) {
+								console.log("up");
+							} else if (randomDirection[1] === 1) {
+								console.log("down");
+							}
 						}
 
 						// randomize between tunnel or bomb
@@ -831,6 +840,10 @@ class App extends Component {
 							}}
 							value={"Github"}
 						/>
+					</div>
+					<div className='inline'>
+						<label>Debug</label>
+						<input className='form-control' name='debug' type='button' onClick={() => this.setState({ debug: !this.state.debug })} value={this.state.debug ? "✅" : "❌"} />
 					</div>
 				</div>
 				<div className={this.state.showWin ? "block" : "hidden"} id='win-popup'>
