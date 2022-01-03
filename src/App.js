@@ -797,16 +797,15 @@ class App extends Component {
 						<label>Generate</label>
 						<input className='form-control' type='button' onClick={this.generateNew} value={"Regenerate"} />
 					</div>
-					<div className='inline' style={{ paddingRight: "0px" }}>
-						<label style={{ paddingLeft: "30px" }}>Scale</label>
+					<div className='inline'>
+						<label>Scale</label>
 						<div className='flex-row-center'>
-							<input className='form-control' type='button' name='scale-increase' onClick={this.scaleIncreaseDecrease} value={"+"} />
-							<input className='form-control' style={{ marginLeft: "2px" }} type='button' name='scale-decrease' onClick={this.scaleIncreaseDecrease} value={"-"} />
+							<input className='form-control' style={{ padding: "1px", maxWidth: "30px" }} type='button' name='scale-increase' onClick={this.scaleIncreaseDecrease} value={"+"} />
+							<input className='form-control' style={{ padding: "1px", maxWidth: "30px" }} type='button' name='scale-decrease' onClick={this.scaleIncreaseDecrease} value={"-"} />
+							<span name='reset' onClick={this.scaleIncreaseDecrease}>
+								<input className='form-control' style={{ padding: "1px", maxWidth: "100px", cursor: "pointer", background: "white" }} type='text' id='no-select' name='reset' value={"Reset"} disabled />
+							</span>
 						</div>
-					</div>
-					<div className='inline' style={{ paddingLeft: "2px" }}>
-						<label></label>
-						<input className='form-control' type='button' name='reset' onClick={this.scaleIncreaseDecrease} value={"Reset"} />
 					</div>
 				</div>
 				<table className='grid'>
@@ -865,7 +864,7 @@ class App extends Component {
 				<div className={this.state.showWin ? "block" : "hidden"} id='win-popup'>
 					<div className='popup'>
 						<div className='popup-content'>
-							<h2>Congratulations! You Won the game!</h2>
+							<h2> Congratulations! You Won the game!</h2>
 							<input className='form-control' type='button' onClick={this.hideSHowWin} value={"Okay"} />
 						</div>
 					</div>

@@ -134,3 +134,9 @@ td {
 		height: 3.75em;
 	}
 }
+
+@media screen and (max-width: 1000px) {
+	.popup-content {
+		width: auto;
+	}
+}
