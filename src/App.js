@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
+import boomSfx from "./boom_sfx.mp3";
+import clickSfx from "./click_sfx.mp3";
 
 // convert the map to a minesweeper map
 function convertToNumber(map, i, j, dimensions) {
@@ -76,6 +78,8 @@ class App extends Component {
 			timerStr: "00 : 00 : 00",
 			playing: false,
 			timerStarted: false,
+			boom_sfx: new Audio(boomSfx),
+			click_sfx: new Audio(clickSfx),
 		};
 		this.onChange = this.onChange.bind(this);
 		this.checkTiles = this.checkTiles.bind(this);
@@ -87,6 +91,16 @@ class App extends Component {
 		this.changePreset = this.changePreset.bind(this);
 		this.generateNew = this.generateNew.bind(this);
 		this.scaleIncreaseDecrease = this.scaleIncreaseDecrease.bind(this);
+		this.playBoom = this.playBoom.bind(this);
+		this.playClick = this.playClick.bind(this);
+	}
+
+	playBoom() {
+		this.state.boom_sfx.play();
+	}
+
+	playClick() {
+		this.state.click_sfx.play();
 	}
 
 	// create array with number provided
@@ -633,6 +647,7 @@ class App extends Component {
 		if (this.state.win === false) {
 			// onclick, check if mine or not. if mine tell user lost
 			if (e.target.getAttribute("data-tiletype") === "mines") {
+				this.playBoom();
 				alert("You step on a mine. You lost!");
 
 				this.revealAll();
@@ -647,6 +662,7 @@ class App extends Component {
 				var innerTile = document.getElementById("inner-" + e.target.id);
 
 				if (innerTile !== null) {
+					this.playClick();
 					if (innerTile.className !== "revealed") {
 						innerTile.className = "revealed";
 
