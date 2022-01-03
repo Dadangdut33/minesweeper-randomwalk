@@ -329,6 +329,7 @@ class App extends Component {
 
 			if (this.state.debug) {
 				console.log("=".repeat(25));
+				console.log("RANDOMWALK DONE");
 				console.log("MAP:");
 				console.log(map);
 				console.log("=".repeat(25));
