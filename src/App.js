@@ -206,11 +206,11 @@ class App extends Component {
 			currentRow = Math.floor(Math.random() * dimensions), // the current row - start at a random spot
 			currentColumn = Math.floor(Math.random() * dimensions), // the current column - start at a random spot
 			directions = [
-				[-1, 0], // left
-				[1, 0], // right
-				[0, -1], // up
-				[0, 1], // down
-			], // array to get a random direction from (left,right,up,down)
+				[-1, 0], // up
+				[1, 0], // down
+				[0, -1], // left
+				[0, 1], // right
+			],
 			lastDirection = [], // save the last direction it went
 			randomDirection; // next turn/direction - holds a value from directions
 
@@ -256,13 +256,13 @@ class App extends Component {
 							console.log("Direction:");
 							console.log("[", randomDirection[0], randomDirection[1], "]");
 							if (randomDirection[0] === -1) {
-								console.log("left");
-							} else if (randomDirection[0] === 1) {
-								console.log("right");
-							} else if (randomDirection[1] === -1) {
 								console.log("up");
-							} else if (randomDirection[1] === 1) {
+							} else if (randomDirection[0] === 1) {
 								console.log("down");
+							} else if (randomDirection[1] === -1) {
+								console.log("left");
+							} else if (randomDirection[1] === 1) {
+								console.log("right");
 							}
 						}
 
