@@ -237,6 +237,21 @@ class App extends Component {
 				var randomLength = Math.ceil(Math.random() * maxLength), //length the next tunnel will be (max of maxLength)
 					tunnelLength = 0; //current length of tunnel being created
 
+				if (this.state.debug) {
+					console.log("Moving for " + randomLength + " spaces");
+					console.log("Direction:");
+					console.log("[", randomDirection[0], randomDirection[1], "]");
+					if (randomDirection[0] === -1) {
+						console.log("(up)");
+					} else if (randomDirection[0] === 1) {
+						console.log("(down)");
+					} else if (randomDirection[1] === -1) {
+						console.log("(left)");
+					} else if (randomDirection[1] === 1) {
+						console.log("(right)");
+					}
+				}
+
 				// lets loop until tunnel is long enough or until it hit an edge
 				while (tunnelLength < randomLength) {
 					//break the loop if it is going out of the map
@@ -246,6 +261,8 @@ class App extends Component {
 						(currentRow === dimensions - 1 && randomDirection[0] === 1) ||
 						(currentColumn === dimensions - 1 && randomDirection[1] === 1)
 					) {
+						if (this.state.debug) console.log("Hit an edge");
+
 						break;
 					} else {
 						// DEBUG
@@ -253,17 +270,6 @@ class App extends Component {
 							console.log("=".repeat(25));
 							console.log("Current row: " + currentRow);
 							console.log("Current column: " + currentColumn);
-							console.log("Direction:");
-							console.log("[", randomDirection[0], randomDirection[1], "]");
-							if (randomDirection[0] === -1) {
-								console.log("up");
-							} else if (randomDirection[0] === 1) {
-								console.log("down");
-							} else if (randomDirection[1] === -1) {
-								console.log("left");
-							} else if (randomDirection[1] === 1) {
-								console.log("right");
-							}
 						}
 
 						// randomize between tunnel or bomb
@@ -289,6 +295,13 @@ class App extends Component {
 					// update the variables unless the last loop broke beforeit made any part of a tunnel
 					lastDirection = randomDirection; //set lastDirection, so it can remember what way it went
 					maxTunnels--; // we created a whole tunnel so lets decrement how many we have left to create
+				}
+				// DEBUG
+				if (this.state.debug) {
+					if (maxTunnels) {
+						console.log("=".repeat(25));
+						console.log("REMAINING TUNNELS: " + maxTunnels);
+					}
 				}
 			}
 
