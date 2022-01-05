@@ -676,8 +676,8 @@ class App extends Component {
 				var innerTile = document.getElementById("inner-" + e.target.id);
 
 				if (innerTile !== null) {
-					this.playClick();
 					if (innerTile.className !== "revealed") {
+						this.playClick();
 						innerTile.className = "revealed";
 
 						var outer = document.getElementById(e.target.id);
