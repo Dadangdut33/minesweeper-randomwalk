@@ -1,5 +1,6 @@
 <p align="center">
-    <img src="https://raw.github.com/Dadangdut33/minesweeper-randomwalk/main/preview.png" width="500px" alt="Preview">
+    <img src="https://raw.githubusercontent.com/Dadangdut33/minesweeper-randomwalk/master/preview.png" 
+    width="450px" alt="Preview">
 </p>
 
 # About
