@@ -4,7 +4,7 @@
 </p>
 
 # About
-A minesweeper game made using React.js and randomwalk algorithm as the randomizer. Originally from [this](https://www.freecodecamp.org/news/how-to-make-your-own-procedural-dungeon-map-generator-using-the-random-walk-algorithm-e0085c8aa9a/), modified to fit the needs of this project.
+A minesweeper game made using React.js and randomwalk algorithm as the randomizer. Originally from [this](https://www.freecodecamp.org/news/how-to-make-your-own-procedural-dungeon-map-generator-using-the-random-walk-algorithm-e0085c8aa9a/), modified to fit the needs of this project. You can try it [here](https://dadangdut33.github.io/minesweeper-randomwalk/).
 
 # Getting Started with Create React App
 
